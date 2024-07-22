@@ -1,30 +1,18 @@
-
 /*
+Requirements:
 1. Minting new tokens: The platform should be able to create new tokens and distribute them to players as rewards. Only the owner can mint tokens.
 2. Transferring tokens: Players should be able to transfer their tokens to others.
 3. Redeeming tokens: Players should be able to redeem their tokens for items in the in-game store.
 4. Checking token balance: Players should be able to check their token balance at any time.
 5. Burning tokens: Anyone should be able to burn tokens, that they own, that are no longer needed.
-*/
-
-/*
-2nd Update
-1. Added a struct Item to define an item with its redemption cost.
-2. Added mapping reference of item to their respective cost and to track user's owned items .
-3. Added a new function to add a new item.
-4. Added a Function checkUserItems to check which items a user owns.
-5. Added a constant Redemption Rate of 100 to specify how much an item is. 
-*/
-
-
-// SPDX-License-Identifier: MIT
+*/// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract DegenToken is ERC20, Ownable {
-    uint256 public constant REDEMPTION_RATE = 100; //This will specify how much an item is
+    uint256 public constant REDEMPTION_RATE = 100; // This will specify how much an item is
     mapping(address => uint256) public stevenTokenOwned;
 
     // Struct to define an item with its redemption cost
@@ -40,10 +28,15 @@ contract DegenToken is ERC20, Ownable {
 
     constructor() ERC20("Degen", "DGN") {
         _mint(msg.sender, 10 * (10 ** uint256(decimals())));
+    
+        // In-game store
+        addItem("Item A", 100);
+        addItem("Item B", 200);
+        addItem("Item C", 300);
     }
 
     // Function to add a new item with its cost
-    function addItem(string memory itemName, uint256 costInTokens) external onlyOwner {
+    function addItem(string memory itemName, uint256 costInTokens) internal {
         items[itemName] = Item(costInTokens);
     }
 
@@ -68,14 +61,9 @@ contract DegenToken is ERC20, Ownable {
         return userItems[user][itemName];
     }
 
-    // Function to mint tokens. *only owner can mint
+    // Function to mint tokens (only owner can mint)
     function mintTokens(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
-    }
-
-    // Function to check token balance
-    function checkBalance(address account) public view returns (uint256) {
-        return balanceOf(account);
     }
 
     // Function to burn tokens that they no longer need
