@@ -1,6 +1,9 @@
 # Steven Token
 
-
+## Problems Encountered during the presentation.
+1. Lack of time
+1st Recording https://www.loom.com/share/2a507c03560d4e0cafe4c87bbdd07135
+2nd Recording https://www.loom.com/share/46da5098df0643d79e20ac69ff10d7d6
 
 
 ## Challenge
